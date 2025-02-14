@@ -1,0 +1,86 @@
+syntax = "proto3";
+package sedachain.batching.v1;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "sedachain/batching/v1/batching.proto";
+import "sedachain/batching/v1/genesis.proto";
+
+option go_package = "github.com/sedaprotocol/seda-chain/x/batching/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Batch returns a batch given the batch number.
+  rpc Batch(QueryBatchRequest) returns (QueryBatchResponse) {
+    option (google.api.http).get = "/seda-chain/batching/batch/{batch_number}";
+  }
+
+  // BatchForHeight returns a batch created at a given block height.
+  rpc BatchForHeight(QueryBatchForHeightRequest)
+      returns (QueryBatchForHeightResponse) {
+    option (google.api.http).get =
+        "/seda-chain/batching/batch_for_height/{block_height}";
+  }
+
+  // Batch returns all batches in the store.
+  rpc Batches(QueryBatchesRequest) returns (QueryBatchesResponse) {
+    option (google.api.http).get = "/seda-chain/batching/batches";
+  }
+
+  // DataResult returns a data result given its associated data request's
+  // ID.
+  rpc DataResult(QueryDataResultRequest) returns (QueryDataResultResponse) {
+    option (google.api.http).get =
+        "/seda-chain/batching/data_result/{data_request_id}";
+  }
+}
+
+// The request message for QueryBatch RPC.
+message QueryBatchRequest { uint64 batch_number = 1; }
+
+// The response message for QueryBatch RPC.
+message QueryBatchResponse {
+  Batch batch = 1 [ (gogoproto.nullable) = false ];
+  DataResultTreeEntries data_result_entries = 2
+      [ (gogoproto.nullable) = false ];
+  repeated ValidatorTreeEntry validator_entries = 3
+      [ (gogoproto.nullable) = false ];
+  repeated BatchSignatures batch_signatures = 4
+      [ (gogoproto.nullable) = false ];
+}
+
+// The request message for BatchForHeight RPC.
+message QueryBatchForHeightRequest { int64 block_height = 1; }
+
+// The response message for BatchForHeight RPC.
+message QueryBatchForHeightResponse {
+  Batch batch = 1 [ (gogoproto.nullable) = false ];
+}
+
+// The request message for QueryBatches RPC.
+message QueryBatchesRequest {
+  // pagination defines an optional pagination for the request.
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+  // with_unsigned indicates whether to return batches without
+  // signatures or not.
+  bool with_unsigned = 2;
+}
+
+// The response message for QueryBatches RPC.
+message QueryBatchesResponse {
+  repeated Batch batches = 1 [ (gogoproto.nullable) = false ];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// The request message for QueryDataResult RPC.
+message QueryDataResultRequest {
+  string data_request_id = 1;
+  uint64 data_request_height = 2;
+}
+
+// The response message for QueryDataResult RPC.
+message QueryDataResultResponse {
+  DataResult data_result = 1 [ (gogoproto.nullable) = true ];
+  BatchAssignment batch_assignment = 2;
+}

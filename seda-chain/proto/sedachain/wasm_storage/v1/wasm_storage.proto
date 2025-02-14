@@ -1,0 +1,27 @@
+syntax = "proto3";
+package sedachain.wasm_storage.v1;
+
+import "gogoproto/gogo.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/sedaprotocol/seda-chain/x/wasm-storage/types";
+
+// OracleProgram is a wasm used for data request.
+message OracleProgram {
+  bytes hash = 1;
+  bytes bytecode = 2;
+  google.protobuf.Timestamp added_at = 3
+      [ (gogoproto.stdtime) = true, (gogoproto.nullable) = false ];
+}
+
+// Params to define the max wasm size allowed.
+message Params {
+  option (gogoproto.equal) = true;
+
+  // MaxWasmSize specifies the maximum allowed size of an unzipped oracle
+  // program.
+  int64 max_wasm_size = 1;
+  // WasmCostPerByte is the cost per unzipped byte of uploading an oracle
+  // program in aseda.
+  uint64 wasm_cost_per_byte = 2;
+}

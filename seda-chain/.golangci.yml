@@ -1,0 +1,86 @@
+run:
+  tests: true
+  # timeout for analysis, e.g. 30s, 5m, default is 1m
+  timeout: 5m
+
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - dogsled
+    - errcheck
+    - goconst
+    - gocritic
+    - gci
+    - gofumpt
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - misspell
+    - prealloc
+    - revive
+    - copyloopvar
+    - staticcheck
+    - stylecheck
+    - typecheck
+    - thelper
+    - unconvert
+    - unused
+    - unparam
+    - misspell
+    - nolintlint
+
+issues:
+  fix: true
+  exclude-rules:
+    - text: "Use of weak random number generator"
+      linters:
+        - gosec
+    - text: "comment on exported var"
+      linters:
+        - golint
+    - text: "don't use an underscore in package name"
+      linters:
+        - golint
+    - text: "ST1003:"
+      linters:
+        - stylecheck
+    # FIXME: Disabled until golangci-lint updates stylecheck with this fix:
+    # https://github.com/dominikh/go-tools/issues/389
+    - text: "ST1016:"
+      linters:
+        - stylecheck
+    - path: "legacy"
+      text: "SA1019:"
+      linters:
+        - staticcheck
+
+  max-issues-per-linter: 10000
+  max-same-issues: 10000
+
+linters-settings:
+  gci:
+    custom-order: true
+    sections:
+      - standard # Standard section: captures all standard packages.
+      - default # Default section: contains all imports that could not be matched to another section type.
+      - prefix(github.com/cometbft/cometbft)
+      - prefix(github.com/CosmWasm)
+      - prefix(github.com/cosmos)
+      - prefix(github.com/cosmos/ibc)
+      - prefix(cosmossdk.io)
+      - prefix(github.com/cosmos/cosmos-sdk)
+      - prefix(github.com/sedaprotocol)
+      - prefix(github.com/sedaprotocol/seda-chain)
+    skip-generated: false
+  dogsled:
+    max-blank-identifiers: 3
+  maligned:
+    # print struct with more effective memory layout or not, false by default
+    suggest-new: true
+  nolintlint:
+    allow-unused: true
+    allow-leading-space: true
+    require-explanation: false
+    require-specific: false

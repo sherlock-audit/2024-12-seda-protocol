@@ -1,0 +1,56 @@
+{
+  "name": "@seda-protocol/evm",
+  "version": "0.5.3",
+  "description": "EVM smart contracts enabling any blockchain to connect with the SEDA decentralized network",
+  "keywords": ["ethereum", "evm", "oracle", "seda", "smart-contracts", "solidity", "cross-chain"],
+  "author": "SEDA Protocol <info@seda.xyz>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sedaprotocol/seda-evm-contracts.git"
+  },
+  "scripts": {
+    "check": "bun run lint && bun run format:sol",
+    "clean": "rimraf artifacts cache typechain-types coverage",
+    "compile": "hardhat compile",
+    "format:sol": "prettier --check \"**/*.sol\"",
+    "format:sol:fix": "prettier --write \"**/*.sol\"",
+    "gen:testvectors": "hardhat run scripts/generateTestVectors.ts",
+    "lint": "bun run lint:ts && bun run lint:sol",
+    "lint:sol": "solhint 'contracts/**/*.sol' --ignore-path .solhintignore",
+    "lint:sol:fix": "solhint 'contracts/**/*.sol' --fix --ignore-path .solhintignore",
+    "lint:ts": "bunx biome check .",
+    "lint:ts:fix": "bunx biome check --write .",
+    "prepublish": "bun run clean && bun run compile",
+    "seda": "hardhat seda",
+    "test": "hardhat test --grep \"^(?!.*[Gg]as.*[Aa]nalysis).*$\"",
+    "test:coverage": "COVERAGE=true hardhat coverage",
+    "test:gas": "REPORT_GAS=true hardhat test --grep \"[Gg]as.*[Aa]nalysis\""
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "5.2.0",
+    "@openzeppelin/contracts-upgradeable": "5.2.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/hardhat-upgrades": "^3.9.0",
+    "@openzeppelin/merkle-tree": "^1.0.7",
+    "dotenv": "^16.4.7",
+    "hardhat": "^2.22.18",
+    "prettier": "^3.4.2",
+    "prettier-plugin-solidity": "^1.4.2",
+    "rimraf": "^6.0.1",
+    "solhint": "^5.0.5",
+    "valibot": "^0.42.1"
+  },
+  "files": [
+    "!/artifacts/contracts/**/*.dbg.json",
+    "!/artifacts/contracts/mocks/**/*",
+    "!/contracts/mocks/**/*",
+    "/artifacts/contracts/**/*.json",
+    "/contracts/**/*.sol",
+    "/typechain-types/**/*.d.ts",
+    "/typechain-types/**/*.ts"
+  ]
+}

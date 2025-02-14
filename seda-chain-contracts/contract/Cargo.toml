@@ -1,0 +1,34 @@
+[package]
+name = "seda-contract"
+version = "0.5.9"
+edition.workspace = true
+rust-version.workspace = true
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+library = []
+
+[dependencies]
+cosmwasm-schema.workspace = true
+cosmwasm-std.workspace = true
+cw-storage-plus.workspace = true
+cw-utils.workspace = true
+cw2.workspace = true
+hex.workspace = true
+schemars.workspace = true
+seda-common = { workspace = true, features = ["cosmwasm"] }
+semver.workspace = true
+serde.workspace = true
+serde-big-array.workspace = true
+serde_json.workspace = true
+sha3.workspace = true
+thiserror.workspace = true
+vrf-rs.workspace = true
+
+[dev-dependencies]
+cw-multi-test.workspace = true
+k256.workspace = true
+seda-common = { workspace = true, features = ["cosmwasm", "test-utils"] }
+lazy_static.workspace = true
